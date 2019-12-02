@@ -1,0 +1,225 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 10.10 (Ubuntu 10.10-0ubuntu0.18.04.1)
+-- Dumped by pg_dump version 12.0
+
+-- Started on 2019-12-02 14:11:12
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'SQL_ASCII';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 17 (class 2615 OID 16735)
+-- Name: rccadungan; Type: SCHEMA; Schema: -; Owner: datama2mi182
+--
+
+CREATE SCHEMA rccadungan;
+
+
+ALTER SCHEMA rccadungan OWNER TO datama2mi182;
+
+SET default_tablespace = '';
+
+--
+-- TOC entry 233 (class 1259 OID 19071)
+-- Name: form; Type: TABLE; Schema: rccadungan; Owner: datama2mi182
+--
+
+CREATE TABLE rccadungan.form (
+    id integer NOT NULL,
+    fran_id integer NOT NULL
+);
+
+
+ALTER TABLE rccadungan.form OWNER TO datama2mi182;
+
+--
+-- TOC entry 281 (class 1259 OID 20023)
+-- Name: form_id_seq; Type: SEQUENCE; Schema: rccadungan; Owner: datama2mi182
+--
+
+CREATE SEQUENCE rccadungan.form_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE rccadungan.form_id_seq OWNER TO datama2mi182;
+
+--
+-- TOC entry 4050 (class 0 OID 0)
+-- Dependencies: 281
+-- Name: form_id_seq; Type: SEQUENCE OWNED BY; Schema: rccadungan; Owner: datama2mi182
+--
+
+ALTER SEQUENCE rccadungan.form_id_seq OWNED BY rccadungan.form.id;
+
+
+--
+-- TOC entry 283 (class 1259 OID 20042)
+-- Name: franchisee; Type: TABLE; Schema: rccadungan; Owner: datama2mi182
+--
+
+CREATE TABLE rccadungan.franchisee (
+    id integer NOT NULL,
+    fran_fname character varying(20) NOT NULL,
+    fran_lname character varying(20) NOT NULL,
+    fran_bday date NOT NULL,
+    fran_address character varying(50) NOT NULL,
+    fran_salary integer NOT NULL,
+    fran_email character varying(50) NOT NULL,
+    fran_phonenum integer NOT NULL,
+    fran_id integer NOT NULL
+);
+
+
+ALTER TABLE rccadungan.franchisee OWNER TO datama2mi182;
+
+--
+-- TOC entry 284 (class 1259 OID 20045)
+-- Name: franchisee_form; Type: VIEW; Schema: rccadungan; Owner: datama2mi182
+--
+
+CREATE VIEW rccadungan.franchisee_form AS
+ SELECT franchisee.fran_id,
+    form.id,
+    franchisee.fran_fname,
+    franchisee.fran_lname,
+    franchisee.fran_salary,
+    franchisee.fran_email
+   FROM (rccadungan.franchisee
+     JOIN rccadungan.form ON ((franchisee.fran_id = form.fran_id)))
+  WHERE (franchisee.fran_salary > 80000);
+
+
+ALTER TABLE rccadungan.franchisee_form OWNER TO datama2mi182;
+
+--
+-- TOC entry 286 (class 1259 OID 20119)
+-- Name: franchisee_id_seq; Type: SEQUENCE; Schema: rccadungan; Owner: datama2mi182
+--
+
+CREATE SEQUENCE rccadungan.franchisee_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE rccadungan.franchisee_id_seq OWNER TO datama2mi182;
+
+--
+-- TOC entry 4051 (class 0 OID 0)
+-- Dependencies: 286
+-- Name: franchisee_id_seq; Type: SEQUENCE OWNED BY; Schema: rccadungan; Owner: datama2mi182
+--
+
+ALTER SEQUENCE rccadungan.franchisee_id_seq OWNED BY rccadungan.franchisee.id;
+
+
+--
+-- TOC entry 3876 (class 2604 OID 20128)
+-- Name: form id; Type: DEFAULT; Schema: rccadungan; Owner: datama2mi182
+--
+
+ALTER TABLE ONLY rccadungan.form ALTER COLUMN id SET DEFAULT nextval('rccadungan.form_id_seq'::regclass);
+
+
+--
+-- TOC entry 3877 (class 2604 OID 20131)
+-- Name: franchisee id; Type: DEFAULT; Schema: rccadungan; Owner: datama2mi182
+--
+
+ALTER TABLE ONLY rccadungan.franchisee ALTER COLUMN id SET DEFAULT nextval('rccadungan.franchisee_id_seq'::regclass);
+
+
+--
+-- TOC entry 4041 (class 0 OID 19071)
+-- Dependencies: 233
+-- Data for Name: form; Type: TABLE DATA; Schema: rccadungan; Owner: datama2mi182
+--
+
+COPY rccadungan.form (id, fran_id) FROM stdin;
+1	123
+2	124
+\.
+
+
+--
+-- TOC entry 4043 (class 0 OID 20042)
+-- Dependencies: 283
+-- Data for Name: franchisee; Type: TABLE DATA; Schema: rccadungan; Owner: datama2mi182
+--
+
+COPY rccadungan.franchisee (id, fran_fname, fran_lname, fran_bday, fran_address, fran_salary, fran_email, fran_phonenum, fran_id) FROM stdin;
+123	May	Sy	1988-10-11	Makati City	75000	ms@gmail,com	404	123
+124	Chris	Paul	1984-07-01	Taguig City	100000	cp@gmail,com	911	124
+\.
+
+
+--
+-- TOC entry 4052 (class 0 OID 0)
+-- Dependencies: 281
+-- Name: form_id_seq; Type: SEQUENCE SET; Schema: rccadungan; Owner: datama2mi182
+--
+
+SELECT pg_catalog.setval('rccadungan.form_id_seq', 1, false);
+
+
+--
+-- TOC entry 4053 (class 0 OID 0)
+-- Dependencies: 286
+-- Name: franchisee_id_seq; Type: SEQUENCE SET; Schema: rccadungan; Owner: datama2mi182
+--
+
+SELECT pg_catalog.setval('rccadungan.franchisee_id_seq', 1, false);
+
+
+--
+-- TOC entry 3879 (class 2606 OID 20345)
+-- Name: form form_pkey; Type: CONSTRAINT; Schema: rccadungan; Owner: datama2mi182
+--
+
+ALTER TABLE ONLY rccadungan.form
+    ADD CONSTRAINT form_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3881 (class 2606 OID 20197)
+-- Name: franchisee franchisee_pkey; Type: CONSTRAINT; Schema: rccadungan; Owner: datama2mi182
+--
+
+ALTER TABLE ONLY rccadungan.franchisee
+    ADD CONSTRAINT franchisee_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3882 (class 2606 OID 20198)
+-- Name: form form_fran_id_fkey; Type: FK CONSTRAINT; Schema: rccadungan; Owner: datama2mi182
+--
+
+ALTER TABLE ONLY rccadungan.form
+    ADD CONSTRAINT form_fran_id_fkey FOREIGN KEY (fran_id) REFERENCES rccadungan.franchisee(id);
+
+
+-- Completed on 2019-12-02 14:11:12
+
+--
+-- PostgreSQL database dump complete
+--
+
